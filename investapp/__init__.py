@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from . import routes, handlers
 
 
 def create_app(test_config: dict = None):
@@ -16,7 +17,6 @@ def create_app(test_config: dict = None):
         SECRET_KEY='dev'
     )
 
-    # Carregando configuração de teste, caso tenha sido passada como argumento
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
     else:
@@ -27,6 +27,10 @@ def create_app(test_config: dict = None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    # Inicializando módulos
+    routes.init_app(app)
+    handlers.init_app(app)
 
     @app.route('/')
     def hello():
