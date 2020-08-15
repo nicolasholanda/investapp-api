@@ -8,6 +8,8 @@ BOVESPA_SYMBOL = 'IBM'
 
 AV_ERROR_KEY = 'Error Message'
 
+AV_NOTE_KEY = 'Note'
+
 AV_OUTPUT_SIZE = {
     'full': 'full',
     'compact': 'compact'

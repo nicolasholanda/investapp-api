@@ -10,4 +10,4 @@ class TimeSeriesRequestSchema(Schema):
     """
 
     symbol = fields.Str()
-    interval = fields.Str(validate=validate.OneOf(list(constants.IA_INTERVAL.keys())))
+    interval = fields.Str(validate=validate.OneOf(list(constants.IA_INTERVAL.keys())), required=True)

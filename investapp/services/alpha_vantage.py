@@ -1,5 +1,5 @@
 import requests
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, TooManyRequests
 
 from investapp.models.chart_time_series import ChartTimeSeries
 from investapp.models.time_series_search import TimeSeriesSearch
@@ -17,4 +17,6 @@ def get_time_series(search: TimeSeriesSearch) -> ChartTimeSeries:
     response = requests.get(constants.AV_URL, params=search.json()).json()
     if response.get(constants.AV_ERROR_KEY):
         raise BadRequest('Erro ao requisitar série temporal na API da Alpha Vantage. Verifique os parâmetros enviados.')
+    elif response.get(constants.AV_NOTE_KEY):
+        raise TooManyRequests('Muitas requisições ao servidor.')
     return alpha_vantage_utils.to_chart_time_series(response, search.timedelta, search.date_regex)
