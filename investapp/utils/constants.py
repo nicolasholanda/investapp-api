@@ -10,6 +10,8 @@ AV_ERROR_KEY = 'Error Message'
 
 AV_NOTE_KEY = 'Note'
 
+AV_GLOBAL_QUOTE_ROOT_KEY = 'Global Quote'
+
 AV_OUTPUT_SIZE = {
     'full': 'full',
     'compact': 'compact'
@@ -31,7 +33,8 @@ AV_TIME_SERIES = {
     'intraday': 'TIME_SERIES_INTRADAY',
     'daily': 'TIME_SERIES_DAILY',
     'weekly': 'TIME_SERIES_WEEKLY',
-    'monthly': 'TIME_SERIES_MONTHLY'
+    'monthly': 'TIME_SERIES_MONTHLY',
+    'global': 'GLOBAL_QUOTE'
 }
 
 AV_TIME_SERIES_KEYS = {
@@ -40,6 +43,19 @@ AV_TIME_SERIES_KEYS = {
     'low': '3. low',
     'close': '4. close',
     'volume': '5. volume'
+}
+
+AV_GLOBAL_QUOTE_KEYS = {
+    'symbol': '01. symbol',
+    'open': '02. open',
+    'high': '03. high',
+    'low': '04. low',
+    'price': '05. price',
+    'volume': '06. volume',
+    'latest_trading_day': '07. latest trading day',
+    'previous_close': '08. previous close',
+    'change': '09. change',
+    'change_percent': '10. change percent'
 }
 
 AV_TIME_SERIES_METADATA = {

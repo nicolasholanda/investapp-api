@@ -1,6 +1,7 @@
 from datetime import datetime
-from .constants import AV_TIME_SERIES_KEYS, AV_TIME_SERIES_METADATA
+from .constants import AV_TIME_SERIES_KEYS, AV_TIME_SERIES_METADATA, AV_GLOBAL_QUOTE_KEYS
 from ..models.chart_time_series import ChartTimeSeries, ChartTimeSeriesItem
+from ..models.global_quote import GlobalQuote
 
 
 def to_chart_time_series(full_series: dict, timedelta, date_regex: str) -> ChartTimeSeries:
@@ -38,3 +39,26 @@ def to_chart_time_series(full_series: dict, timedelta, date_regex: str) -> Chart
     return ChartTimeSeries(time_series_list,
                            last_refreshed_date.timestamp() * 1000,
                            symbol, high_val, low_val, open_val)
+
+
+def to_global_quote(full_global_quote: dict) -> GlobalQuote:
+    """
+    Método responsável por converter o JSON da cotação global em um objeto GlobalQuote.
+    :param full_global_quote:
+    :return:
+    """
+
+    symbol = full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['symbol'])
+    open_val = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['open']))
+    high_val = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['high']))
+    low_val = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['low']))
+    price = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['price']))
+    volume = int(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['volume']))
+    latest_trading_day = datetime.strptime(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['latest_trading_day']),
+                                           '%Y-%m-%d').timestamp() * 1000
+    previous_close = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['previous_close']))
+    change = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['change']))
+    change_percent = full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['change_percent'])
+
+    return GlobalQuote(symbol, open_val, high_val, low_val, price, volume, latest_trading_day, previous_close,
+                       change, change_percent)
