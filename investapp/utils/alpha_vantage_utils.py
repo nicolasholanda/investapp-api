@@ -1,7 +1,8 @@
 from datetime import datetime
-from .constants import AV_TIME_SERIES_KEYS, AV_TIME_SERIES_METADATA, AV_GLOBAL_QUOTE_KEYS
+from .constants import AV_TIME_SERIES_KEYS, AV_TIME_SERIES_METADATA, AV_GLOBAL_QUOTE_KEYS, AV_SYMBOL_SEARCH_KEYS
 from ..models.chart_time_series import ChartTimeSeries, ChartTimeSeriesItem
 from ..models.global_quote import GlobalQuote
+from ..models.search_result import SearchResult, SearchResultItem
 
 
 def to_chart_time_series(full_series: dict, timedelta, date_regex: str) -> ChartTimeSeries:
@@ -36,17 +37,17 @@ def to_chart_time_series(full_series: dict, timedelta, date_regex: str) -> Chart
 def to_global_quote(full_global_quote: dict) -> GlobalQuote:
     """
     Método responsável por converter o JSON da cotação global em um objeto GlobalQuote.
-    :param full_global_quote:
-    :return:
+    :param full_global_quote: Resposta original retornada pelo servidor
+    :return: Objeto GlobalQuote
     """
 
-    symbol = full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['symbol'])
-    open_val = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['open']))
-    high_val = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['high']))
-    low_val = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['low']))
-    price = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['price']))
-    volume = int(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['volume']))
-    latest_trading_day = datetime.strptime(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['latest_trading_day']),
+    symbol: str = full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['symbol'])
+    open_val: float = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['open']))
+    high_val: float = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['high']))
+    low_val: float = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['low']))
+    price: float = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['price']))
+    volume: int = int(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['volume']))
+    latest_trading_day: float = datetime.strptime(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['latest_trading_day']),
                                            '%Y-%m-%d').timestamp() * 1000
     previous_close = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['previous_close']))
     change = float(full_global_quote.get(AV_GLOBAL_QUOTE_KEYS['change']))
@@ -54,3 +55,28 @@ def to_global_quote(full_global_quote: dict) -> GlobalQuote:
 
     return GlobalQuote(symbol, open_val, high_val, low_val, price, volume, latest_trading_day, previous_close,
                        change, change_percent)
+
+
+def to_search_result(full_search_result: dict) -> SearchResult:
+    """
+    Método responsável por converter o JSON do resultado da busca por símbolo em um objeto SearchResult.
+    :param full_search_result: Resposta original retornada pelo servidor
+    :return: Objeto SearchResult
+    """
+    search_items: list = []
+
+    for result in full_search_result:
+        symbol: str = result.get(AV_SYMBOL_SEARCH_KEYS['symbol'])
+        name: str = result.get(AV_SYMBOL_SEARCH_KEYS['name'])
+        type_val: str = result.get(AV_SYMBOL_SEARCH_KEYS['type'])
+        region: str = result.get(AV_SYMBOL_SEARCH_KEYS['region'])
+        market_open: str = result.get(AV_SYMBOL_SEARCH_KEYS['market_open'])
+        market_close: str = result.get(AV_SYMBOL_SEARCH_KEYS['market_close'])
+        timezone: str = result.get(AV_SYMBOL_SEARCH_KEYS['timezone'])
+        currency: str = result.get(AV_SYMBOL_SEARCH_KEYS['currency'])
+        match_score: str = result.get(AV_SYMBOL_SEARCH_KEYS['match_score'])
+
+        search_items.append(SearchResultItem(symbol, name, type_val, region, market_open, market_close, timezone,
+                                             currency, match_score))
+
+    return SearchResult(search_items)

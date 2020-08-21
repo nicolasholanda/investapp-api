@@ -29,12 +29,13 @@ AV_INTRADAY_INTERVAL = {
     '60': '60min'
 }
 
-AV_TIME_SERIES = {
+AV_FUNCTIONS = {
     'intraday': 'TIME_SERIES_INTRADAY',
     'daily': 'TIME_SERIES_DAILY',
     'weekly': 'TIME_SERIES_WEEKLY',
     'monthly': 'TIME_SERIES_MONTHLY',
-    'global': 'GLOBAL_QUOTE'
+    'global': 'GLOBAL_QUOTE',
+    'search': 'SYMBOL_SEARCH'
 }
 
 AV_TIME_SERIES_KEYS = {
@@ -63,39 +64,53 @@ AV_TIME_SERIES_METADATA = {
     'last_refreshed': '3. Last Refreshed'
 }
 
+AV_SYMBOL_SEARCH_ROOT_KEY = 'bestMatches'
+
+AV_SYMBOL_SEARCH_KEYS = {
+    'symbol': '1. symbol',
+    'name': '2. name',
+    'type': '3. type',
+    'region': '4. region',
+    'market_open': '5. marketOpen',
+    'market_close': '6. marketClose',
+    'timezone': '7. timezone',
+    'currency': '8. currency',
+    'match_score': '9. matchScore',
+}
+
 
 # InvestApp Constants
 
 IA_INTERVAL = {
     '1D': {
-        'function': AV_TIME_SERIES['intraday'],
+        'function': AV_FUNCTIONS['intraday'],
         'interval': AV_INTRADAY_INTERVAL['5'],
         'timedelta': timedelta(days=1),
         'date_regex': '%Y-%m-%d %H:%M:%S'
     },
     '5D': {
-        'function': AV_TIME_SERIES['intraday'],
+        'function': AV_FUNCTIONS['intraday'],
         'interval': AV_INTRADAY_INTERVAL['30'],
         'timedelta': timedelta(days=5),
         'date_regex': '%Y-%m-%d %H:%M:%S'
     },
     '1M': {
-        'function': AV_TIME_SERIES['daily'],
+        'function': AV_FUNCTIONS['daily'],
         'timedelta': timedelta(days=30),
         'date_regex': '%Y-%m-%d'
     },
     '6M': {
-        'function': AV_TIME_SERIES['daily'],
+        'function': AV_FUNCTIONS['daily'],
         'timedelta': timedelta(days=30*6),
         'date_regex': '%Y-%m-%d'
     },
     '1Y': {
-        'function': AV_TIME_SERIES['daily'],
+        'function': AV_FUNCTIONS['daily'],
         'timedelta': timedelta(days=30*12),
         'date_regex': '%Y-%m-%d'
     },
     '5Y': {
-        'function': AV_TIME_SERIES['monthly'],
+        'function': AV_FUNCTIONS['monthly'],
         'timedelta': timedelta(days=30*12*5),
         'date_regex': '%Y-%m-%d'
     }
