@@ -18,14 +18,8 @@ def to_chart_time_series(full_series: dict, timedelta, date_regex: str) -> Chart
     meta_data: dict = full_series.get(full_object_keys[0])
     time_series: dict = full_series.get(full_object_keys[1])
 
-    symbol: str = meta_data.get(AV_TIME_SERIES_METADATA['symbol'])
     last_refreshed: str = meta_data.get(AV_TIME_SERIES_METADATA['last_refreshed'])
     last_refreshed_date: datetime = datetime.strptime(last_refreshed, date_regex)
-
-    last_item = time_series.get(last_refreshed)
-    high_val = last_item.get(AV_TIME_SERIES_KEYS['high'])
-    low_val = last_item.get(AV_TIME_SERIES_KEYS['low'])
-    open_val = last_item.get(AV_TIME_SERIES_KEYS['open'])
 
     time_series_list: list = []
     for key, value in time_series.items():
@@ -36,9 +30,7 @@ def to_chart_time_series(full_series: dict, timedelta, date_regex: str) -> Chart
         else:
             break
 
-    return ChartTimeSeries(time_series_list,
-                           last_refreshed_date.timestamp() * 1000,
-                           symbol, high_val, low_val, open_val)
+    return ChartTimeSeries(time_series_list)
 
 
 def to_global_quote(full_global_quote: dict) -> GlobalQuote:

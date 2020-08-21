@@ -24,7 +24,6 @@ def test_should_return_ibovespa_points_for_all_intervals(client: FlaskClient):
                                                                     interval=interval_key)
 
         assert response.status_code == OK
-        assert response.json.get('symbol') == BOVESPA_SYMBOL
         assert response_is_in_range(response, interval_dict.get('timedelta'))
 
 
@@ -39,7 +38,6 @@ def test_should_return_company_points_for_all_intervals(client: FlaskClient):
         response: Response = get_time_series_by_symbol_and_interval(client, symbol='BABA', interval=interval_key)
 
         assert response.status_code == OK
-        assert response.json.get('symbol') == 'BABA'
         assert response_is_in_range(response, interval_dict.get('timedelta'))
 
 
@@ -128,7 +126,7 @@ def response_is_in_range(response: Response, interval: timedelta) -> bool:
     :param response: Resposta da API.
     :return: True caso a resposta esteja no intervalo correto. False, caso contrário.
     """
-    last_refreshed: datetime = datetime.fromtimestamp(response.json.get('last_refreshed') / 1000)
+    last_refreshed: datetime = datetime.fromtimestamp(response.json.get('items')[0]['timestamp'] / 1000)
     first_item: datetime = datetime.fromtimestamp(response.json.get('items')[-1]['timestamp'] / 1000)
 
     return (last_refreshed - first_item) <= interval
