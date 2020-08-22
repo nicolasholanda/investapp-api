@@ -17,7 +17,7 @@ AV_OUTPUT_SIZE = {
     'compact': 'compact'
 }
 
-AV_API_KEY = os.getenv('AV_API_KEY')
+AV_API_KEY = os.getenv('AV_API_KEY', 'IRDEZH22MZ1ZY29Q')
 
 AV_URL = 'https://www.alphavantage.co/query'
 
