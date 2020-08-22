@@ -1,14 +1,15 @@
 from investapp.utils.constants import AV_API_KEY, AV_FUNCTIONS
 
 
-class GlobalQuoteSearch:
+class OverviewSearch:
     """
-    Classe que representa o filtro de busca de cotação global por empresas.
+    Classe que representa o filtro de busca de visão geral por empresas.
     """
-    def __init__(self, symbol: str):
-        self.symbol = symbol
+
+    def __init__(self, params: dict):
+        self.symbol = params.get('symbol')
         self.apikey = AV_API_KEY
-        self.function = AV_FUNCTIONS['global']
+        self.function = AV_FUNCTIONS['overview']
 
     def json(self) -> dict:
         """

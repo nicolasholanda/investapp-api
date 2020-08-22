@@ -7,4 +7,4 @@ class GlobalQuoteRequestSchema(Schema):
     empresa.
     """
 
-    symbol = fields.Str(required=True)
+    symbol = fields.Str(required=True, validate=validate.Length(min=1))

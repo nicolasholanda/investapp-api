@@ -1,6 +1,8 @@
 from datetime import datetime
-from .constants import AV_TIME_SERIES_KEYS, AV_TIME_SERIES_METADATA, AV_GLOBAL_QUOTE_KEYS, AV_SYMBOL_SEARCH_KEYS
+from .constants import AV_TIME_SERIES_KEYS, AV_TIME_SERIES_METADATA, AV_GLOBAL_QUOTE_KEYS, AV_SYMBOL_SEARCH_KEYS, \
+    AV_OVERVIEW_KEYS
 from ..models.chart_time_series import ChartTimeSeries, ChartTimeSeriesItem
+from ..models.company_overview import CompanyOverview
 from ..models.global_quote import GlobalQuote
 from ..models.search_result import SearchResult, SearchResultItem
 
@@ -80,3 +82,22 @@ def to_search_result(full_search_result: dict) -> SearchResult:
                                              currency, match_score))
 
     return SearchResult(search_items)
+
+
+def to_company_overview(full_company_overview: dict) -> CompanyOverview:
+    """
+    Método responsável por converter o JSON do resultado da visão geral da empresa em um objeto CompanyOverview.
+    :param full_company_overview: Resposta original retornada pelo servidor
+    :return: Objeto CompanyOverview
+    """
+    symbol = full_company_overview.get(AV_OVERVIEW_KEYS.get('symbol'))
+    name = full_company_overview.get(AV_OVERVIEW_KEYS.get('name'))
+    description = full_company_overview.get(AV_OVERVIEW_KEYS.get('description'))
+    exchange = full_company_overview.get(AV_OVERVIEW_KEYS.get('exchange'))
+    currency = full_company_overview.get(AV_OVERVIEW_KEYS.get('currency'))
+    country = full_company_overview.get(AV_OVERVIEW_KEYS.get('country'))
+    sector = full_company_overview.get(AV_OVERVIEW_KEYS.get('sector'))
+    industry = full_company_overview.get(AV_OVERVIEW_KEYS.get('industry'))
+    address = full_company_overview.get(AV_OVERVIEW_KEYS.get('address'))
+
+    return CompanyOverview(symbol, name, description, exchange, currency, country, sector, industry, address)

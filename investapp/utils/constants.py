@@ -35,7 +35,8 @@ AV_FUNCTIONS = {
     'weekly': 'TIME_SERIES_WEEKLY',
     'monthly': 'TIME_SERIES_MONTHLY',
     'global': 'GLOBAL_QUOTE',
-    'search': 'SYMBOL_SEARCH'
+    'search': 'SYMBOL_SEARCH',
+    'overview': 'OVERVIEW'
 }
 
 AV_TIME_SERIES_KEYS = {
@@ -76,6 +77,18 @@ AV_SYMBOL_SEARCH_KEYS = {
     'timezone': '7. timezone',
     'currency': '8. currency',
     'match_score': '9. matchScore',
+}
+
+AV_OVERVIEW_KEYS = {
+    'symbol': 'Symbol',
+    'name': 'Name',
+    'description': 'Description',
+    'exchange': 'Exchange',
+    'currency': 'Currency',
+    'country': 'Country',
+    'sector': 'Sector',
+    'industry': 'Industry',
+    'address': 'Address'
 }
 
 

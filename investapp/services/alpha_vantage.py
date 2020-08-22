@@ -2,8 +2,11 @@ import requests
 from werkzeug.exceptions import BadRequest, TooManyRequests
 
 from investapp.models.chart_time_series import ChartTimeSeries
+from investapp.models.company_overview import CompanyOverview
 from investapp.models.global_quote import GlobalQuote
 from investapp.models.global_quote_search import GlobalQuoteSearch
+from investapp.models.overview_search import OverviewSearch
+from investapp.models.search_result import SearchResult
 from investapp.models.symbol_search import SymbolSearch
 from investapp.models.time_series_search import TimeSeriesSearch
 from investapp.utils import constants, alpha_vantage_utils
@@ -46,7 +49,7 @@ def get_global_quote(search: GlobalQuoteSearch) -> GlobalQuote:
     return alpha_vantage_utils.to_global_quote(global_quote_json)
 
 
-def search_company(search: SymbolSearch):
+def search_company(search: SymbolSearch) -> SearchResult:
     """
     Método responsável por buscar símbolos de empresas, considerando a palavra-chave recebida
     por parâmetro
@@ -61,3 +64,19 @@ def search_company(search: SymbolSearch):
     result_search_json: dict = response.get(AV_SYMBOL_SEARCH_ROOT_KEY)
 
     return alpha_vantage_utils.to_search_result(result_search_json)
+
+
+def get_company_overview(search: OverviewSearch) -> CompanyOverview:
+    """
+    Método responsável por buscar visão geral da empresas, considerando os parâmetros enviados
+    :param search: Parâmetros para buscar a visão geral da empresa no Alpha Vantage
+    :return: Objeto contendo visão geral da empresa.
+    """
+
+    response: dict = requests.get(constants.AV_URL, params=search.json()).json()
+    if response.get(constants.AV_NOTE_KEY):
+        raise TooManyRequests('Muitas requisições ao servidor.')
+
+    overview_json: dict = response
+
+    return alpha_vantage_utils.to_company_overview(overview_json)
